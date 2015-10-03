@@ -91,7 +91,10 @@ namespace DesGui
 
         private void Button_Settings_Click(object sender, RoutedEventArgs e)
         {
-
+            if (Settings_Form.Visibility == Visibility.Visible)
+                Settings_Form.Visibility = Visibility.Hidden;
+            else
+                Settings_Form.Visibility = Visibility.Visible;
         }
 
         private void CheckBox_Log_Checked(object sender, RoutedEventArgs e)
