@@ -7,7 +7,7 @@ namespace DeSimulator
 {
     public static class CityMap
     {
-        public static Dictionary<string, BusStop> BusStops = new Dictionary<string, BusStop>();
+        public static Dictionary<string, BusStop> BusStops;
         public static Route[] Routes =
         {
             new Route("Bronziet",              "Smaragd",               350.0f,  1.0f),
@@ -35,9 +35,32 @@ namespace DeSimulator
             new Route("Rachelsmolen",          "Station Eindhoven",     1100.0f, 5.0f)
         };
 
+        public static string[] TestLine =
+        {
+            "Bronziet",
+            "Smaragd",
+            "Hondsruglaan",
+            "Paasberglaan",
+            "Grebbeberglaan",
+            "Deneerdbrand",
+            "Noordzeelaan",
+            "Lohengrinlaan",
+            "Koning Arthurlaan",
+            "WC Woensel",
+            "Catharina Zh oost",
+            "Generaal Hardenbergpad",
+            "Drossen straat",
+            "Generaal Coenderslaan",
+            "Peppelrode",
+            "MMC Eindhoven",
+            "Rachelsmolen",
+            "Station Eindhoven"
+        };
+
         public static void Init()
         {
-            foreach(var r in Routes)
+            BusStops = new Dictionary<string, BusStop>();
+            foreach (var r in Routes)
             {
                 BusStop t;
                 if (!BusStops.TryGetValue(r.BusStopA, out t))

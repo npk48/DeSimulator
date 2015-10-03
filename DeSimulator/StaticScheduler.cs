@@ -12,28 +12,7 @@ namespace DeSimulator
             //throw new NotImplementedException();
             if (Destination.Count <= 1)
             {
-                var d = new string[]
-                {
-                    "Bronziet",
-                    "Smaragd",
-                    "Hondsruglaan",
-                    "Paasberglaan",
-                    "Grebbeberglaan",
-                    "Deneerdbrand",
-                    "Noordzeelaan",
-                    "Lohengrinlaan",
-                    "Koning Arthurlaan",
-                    "WC Woensel",
-                    "Catharina Zh oost",
-                    "Generaal Hardenbergpad",
-                    "Drossen straat",
-                    "Generaal Coenderslaan",
-                    "Peppelrode",
-                    "MMC Eindhoven",
-                    "Rachelsmolen",
-                    "Station Eindhoven"
-                };
-                Destination = new List<string>(d);
+                Destination = new List<string>(CityMap.TestLine);
             }
             else
             {

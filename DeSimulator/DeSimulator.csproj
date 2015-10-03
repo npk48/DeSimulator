@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="City\CityMap.cs" />
     <Compile Include="City\Route.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="IScheduler.cs" />
     <Compile Include="Process\Bus.cs" />
     <Compile Include="City\BusStop.cs" />

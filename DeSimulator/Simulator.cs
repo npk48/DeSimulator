@@ -7,6 +7,7 @@ using React.Distribution;
 using React.Tasking;
 using React.Monitoring;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace DeSimulator
 {
@@ -14,16 +15,64 @@ namespace DeSimulator
     {
         public Simulator()
         {
-            Bus = new Dictionary<int, List<DeSimulator.Bus>>();
-
-            // test only
-            Bus.Add(0, new List<DeSimulator.Bus>());
-            Bus[0].Add(new Bus(this,0));
-            Scheduler = new StaticScheduler();
-            CityMap.Init();
+                    
         }
 
-        public static long RunTime = 60 * 30; // 60s * 30min
+        ~Simulator()
+        {
+            if (Backend != null)
+                Backend.Join();
+        }
+
+        private Thread Backend;
+
+        public void Start()
+        {
+            if(Backend != null)
+            {
+                Console.Clear();
+                Backend.Join();
+            }
+                
+                         
+            Backend = new Thread(
+                new ThreadStart(
+                    new Action(() => 
+                    {
+                        Run(new Process(this, Generator));
+                    })));
+            Backend.Start();
+        }
+
+        private void Init()
+        {
+            CityMap.Init();
+            Bus = new Dictionary<int, List<Bus>>();
+            foreach (int line in Config.Buses.Keys)
+            {
+                Bus.Add(line, new List<Bus>());
+                for (int i = 0; i < Config.Buses[line]; i++)
+                    Bus[line].Add(new Bus(this, line));
+            }
+            Scheduler = Config.Scheduler;
+            RunTime = Config.RunningTime;
+        }
+
+        private Config _Config;
+        public Config Config
+        {
+            get
+            {
+                return _Config;
+            }
+            set
+            {
+                _Config = value;
+                Init();
+            }
+        }
+
+        public static long RunTime;
 
         public static IScheduler Scheduler;
         public Dictionary<int,List<Bus>> Bus { get; private set; }      
@@ -33,16 +82,11 @@ namespace DeSimulator
         {
             get
             {
-                int r;
+                double r;
                 do
-                    r = (int)IntervalRate.NextDouble();
-                while (r <= 0L);
-                return r;
-            }
-            set
-            {
-                IntervalRate.Mean = value;
-                IntervalRate.StandardDeviation = value;
+                    r = IntervalRate.NextDouble();
+                while (r < 1L);
+                return (int)r;
             }
         }
 
@@ -51,41 +95,48 @@ namespace DeSimulator
         {
             get
             {
-                int r;
+                double r;
                 do
-                    r = (int)ArrivalRate.NextDouble();
+                    r = ArrivalRate.NextDouble();
                 while (r <= 0L);
-                return r;
-            }
-            set
-            {
-                ArrivalRate.Mean = value;
+                return (int)r;
             }
         }
 
-        public IEnumerator<Task> Generator(Process Self, object Data)
+        private IEnumerator<Task> Generator(Process Self, object Data)
         {
             // initialize
             foreach(var line in Bus.Values)
-                foreach(var bus in line)
-                    bus.Activate(null);
+            {
+                long Offset = 0;
+                foreach (var bus in line)
+                {
+                    bus.Activate(null,Offset);
+                    Offset += Config.BusInterval;
+                }     
+            }
 
-            Interval = 60;
-            int Step = Interval;
+            IntervalRate.Mean = 60; // 60s as random step time expectation
+            IntervalRate.StandardDeviation = 30; // +- 30s around 60s           
+
+            var rd = new Random();
             // loop
             while(Now<RunTime)
             {
-                Arrival = 1 + Step / 60; // 1 passenger per 60s
+                int Step = Interval;
+                ArrivalRate.Mean = 1 * Step / 60.0; // 1 passenger per 60s
                 foreach (var B in CityMap.BusStops.Values)
                 {
-                    if (B.Name != "Drossen straat") continue; // test only, from DrossenStraat to StationEindhoven
                     int Count = Arrival;
                     for(int i=0; i<Count;i++)
                     {
-                        string Destination = "Station Eindhoven";
+                        var Destinations = (from d in CityMap.TestLine
+                                            where d != B.Name
+                                            select d).ToList();
+                        string Destination = Destinations[rd.Next(0, Destinations.Count)];
                         if (!B.Passengers.Keys.ToList().Exists(x => x == Destination))
                             B.Passengers[Destination] = new ConcurrentQueue<Passenger>();
-                        B.Passengers[Destination].Enqueue(new Passenger(this, Destination));
+                        B.Passengers[Destination].Enqueue(new Passenger(this, B.Name, Destination));
                     }
                 }
                 yield return Self.Delay(Step); // random time 

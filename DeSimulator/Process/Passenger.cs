@@ -8,11 +8,12 @@ namespace DeSimulator
 {
     public class Passenger : Process
     {
-        public Passenger(Simulation Sim, string Dest = "") : base(Sim)
+        public Passenger(Simulation Sim, string From = "", string To = "") : base(Sim)
         {
             Id = Counter++;
             State = PassengerState.Waiting;
-            Destination = Dest;
+            Start = From;
+            Destination = To;
             OnOffTime = 1;           
         }
 
@@ -40,6 +41,8 @@ namespace DeSimulator
                     TestOutput();
             }
         }
+
+        public string Start { get; set; }
         public string Destination { get; set; }
         public int OnOffTime { get; private set; }
         public long BaseTime { get; private set; }
@@ -65,13 +68,9 @@ namespace DeSimulator
 
         private void TestOutput()
         {
-            Console.WriteLine(
-                "Id: " + Id.ToString() +
-                " Starting time: " + (BaseTime/60.0f).ToString() +
-                " Wait time: " + (WaitingTime/60.0f).ToString() +
-                " Travel time: " + (TravellingTime/60.0f).ToString() +
-                " Total : " + Counter.ToString()
-                );
+            Console.WriteLine("Id: " + Id.ToString());
+            Console.WriteLine(" From " + Start + " to " + Destination);
+            Console.WriteLine(" "+ (WaitingTime / 60.0f).ToString() +" : "+ (TravellingTime / 60.0f).ToString());
         }
     }
 
