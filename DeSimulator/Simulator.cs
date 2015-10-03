@@ -26,9 +26,15 @@ namespace DeSimulator
 
         private Thread Backend;
 
+        public delegate void UpdateBusStopViewerDelegate(string[] Name, int[] Number);
+        public delegate void UpdateTotalTimeViewerDelegate(float Waiting, float Travelling);
+        public static UpdateBusStopViewerDelegate UpdateBusStopViewerHandler;
+        public static UpdateTotalTimeViewerDelegate UpdateTotalTimeViewerHandler;
+
         public void Start()
         {
-            if(Backend != null)
+            //Run(new Process(this, Generator)); return;
+            if (Backend != null)
             {
                 Console.Clear();
                 Backend.Join();
@@ -56,6 +62,7 @@ namespace DeSimulator
             }
             Scheduler = Config.Scheduler;
             RunTime = Config.RunningTime;
+            Passenger.Travelling = Passenger.Waiting = Passenger.Counter = 0;
         }
 
         private Config _Config;
@@ -105,8 +112,13 @@ namespace DeSimulator
 
         private IEnumerator<Task> Generator(Process Self, object Data)
         {
+            // initialize for data view
+            Dictionary<string, int> BusStopPassengers = new Dictionary<string, int>();
+            foreach (var b in CityMap.BusStops.Keys)
+                BusStopPassengers.Add(b, 0);
+
             // initialize
-            foreach(var line in Bus.Values)
+            foreach (var line in Bus.Values)
             {
                 long Offset = 0;
                 foreach (var bus in line)
@@ -128,7 +140,8 @@ namespace DeSimulator
                 foreach (var B in CityMap.BusStops.Values)
                 {
                     int Count = Arrival;
-                    for(int i=0; i<Count;i++)
+                    BusStopPassengers[B.Name] += Count;
+                    for (int i=0; i<Count;i++)
                     {
                         var Destinations = (from d in CityMap.TestLine
                                             where d != B.Name
@@ -142,6 +155,23 @@ namespace DeSimulator
                 yield return Self.Delay(Step); // random time 
             }
 
+
+            //string[] Names = CityMap.BusStops.Keys.ToArray();
+            //int[] Values = new int[Names.Length];
+            //int Index = 0;
+            //foreach (var b in CityMap.BusStops.Values)
+            //{
+            //    int Count = 0;
+            //    foreach (var q in b.Passengers.Values)
+            //    {
+            //        Count += q.Count;
+            //    }
+            //    Names[Index] = b.Name;
+            //    Values[Index] = Count;
+            //    Index++;
+            //}
+            UpdateBusStopViewerHandler(BusStopPassengers.Keys.ToArray(), BusStopPassengers.Values.ToArray());
+            UpdateTotalTimeViewerHandler(Passenger.Waiting, Passenger.Travelling);
             // release
             yield break;
         }

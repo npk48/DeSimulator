@@ -19,24 +19,58 @@
         <Grid HorizontalAlignment="Left" Height="330" Margin="0,30,0,0" VerticalAlignment="Top" Width="640">
             <Button x:Name="Button_Launch" Content="Run" HorizontalAlignment="Left" Margin="570,300,0,0" VerticalAlignment="Top" Width="60" Height="20" BorderThickness="0" Click="Button_Launch_Click"/>
             <Button x:Name="Button_Settings" Content="Settings" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="57" Height="20" BorderThickness="0" Click="Button_Settings_Click"/>
+            <Label x:Name="Label_Time" Content="Time in miniute:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="400,297,0,0"/>
+            <TextBox x:Name="TextBox_SimTime" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="500,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="60" VerticalAlignment="Top" Width="60" BorderThickness="0"/>
             <CheckBox x:Name="CheckBox_Log" Content="Console" HorizontalAlignment="Left" Margin="79,303,0,7" VerticalAlignment="Center" Height="20" Foreground="White" BorderThickness="0" Checked="CheckBox_Log_Checked" Unchecked="CheckBox_Log_Unchecked"/>
             <Grid HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640">
                 <Image x:Name="Image_Background" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640" Stretch="UniformToFill" Source="/Image/Background.jpg" Opacity="0.5"/>
                 <Grid x:Name="SimRegion" >
-                    <chart:PieChart        
-                        Width="640"
-                        Height="292"
-                        ChartTitle="Minimal Pie Chart"   
-                        ChartSubTitle="Chart with fixed width and height"    
-                        SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-                        <chart:PieChart.Series>
-                            <chart:ChartSeries            
-                                SeriesTitle="Errors"
-                                DisplayMember="Category"
-                                ValueMember="Number"             
-                                ItemsSource="{Binding Path=Errors}" />
-                        </chart:PieChart.Series>
-                    </chart:PieChart>
+                    <ScrollViewer x:Name="SimRegionScroller" BorderThickness="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="SimRegionSroll">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="640"/>
+                                <ColumnDefinition Width="640"/>
+                            </Grid.ColumnDefinitions>
+                            <chart:ClusteredColumnChart        
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"                                
+                                ChartLegendVisibility="Collapsed"                          
+                                Width="640"                                             
+                                Height="292"                                  
+                                Margin="0,0,0,0"                         
+                                ChartTitle="Passengers"                                                  
+                                ChartSubTitle="Total number of passengers arrived at each bus stop"                            
+                                SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+                                <chart:ClusteredColumnChart.Series>
+                                    <chart:ChartSeries                                
+                                        SeriesTitle="Bus stops"                              
+                                        DisplayMember="Stop"                                   
+                                        ValueMember="Number"                                  
+                                        ItemsSource="{Binding Path=BusStops}" />
+                                </chart:ClusteredColumnChart.Series>
+                            </chart:ClusteredColumnChart>
+                            <chart:PieChart     
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"                               
+                                ChartLegendVisibility="Collapsed"                          
+                                Width="640"                                             
+                                Height="292"                                  
+                                Margin="0,0,0,0"                         
+                                ChartTitle="Time"                                                  
+                                ChartSubTitle="Waiting and travelling"                            
+                                SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+                                <chart:PieChart.Series>
+                                    <chart:ChartSeries      
+                                        SeriesTitle="Waiting Vs Travelling"                              
+                                        DisplayMember="Type"                                   
+                                        ValueMember="Time"                                  
+                                        ItemsSource="{Binding Path=TotalTimes}" />
+                                </chart:PieChart.Series>
+                            </chart:PieChart>
+                        </Grid>
+                        
+                        <!-- other charts -->
+                    </ScrollViewer>
                 </Grid>
                 <ScrollViewer Name="Scroller" Margin="0,0,0,17" Background="Black" BorderThickness="0" VerticalScrollBarVisibility="Hidden"  Visibility="Hidden" Opacity="0.7">
                     <StackPanel>
@@ -50,7 +84,7 @@
                     </StackPanel>
                 </ScrollViewer>
                 <TextBox Text="{Binding Input, Mode=TwoWay}" Background="Black" Foreground="White" FontFamily="Consolas" x:Name="InputBlock" BorderBrush="{x:Null}" SelectionBrush="{x:Null}" Height="17" Width="640" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderThickness="0" Visibility="Hidden" Opacity="0.7"/>
-                <controls:Settings x:Name="Settings_Form" Width="640" Height="292" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
+                <controls:Settings x:Name="Settings_Form" Width="640" Height="292" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>      
             </Grid>
         </Grid>    
     </Grid>

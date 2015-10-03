@@ -24,8 +24,7 @@ namespace DeSimulator
                     {
                         ExpectedTime = (int)(r.ExpectedTime * 60);
                     }
-                }
-                
+                }              
             }
             
         }

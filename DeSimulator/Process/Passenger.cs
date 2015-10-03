@@ -17,7 +17,9 @@ namespace DeSimulator
             OnOffTime = 1;           
         }
 
-        private static int Counter = 0;
+        public static int Counter = 0;
+        public static float Waiting = 0.0f;
+        public static float Travelling = 0.0f;
 
         private int Id;
 
@@ -38,7 +40,11 @@ namespace DeSimulator
                 if (value == PassengerState.Arrived)
                     TravellingTime = Simulation.Now - BaseTime - WaitingTime;
                 if (value == PassengerState.Arrived)
+                {
+                    Waiting += WaitingTime / 60.0f;
+                    Travelling += TravellingTime / 60.0f;
                     TestOutput();
+                }                 
             }
         }
 

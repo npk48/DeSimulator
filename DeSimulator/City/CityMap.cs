@@ -54,7 +54,25 @@ namespace DeSimulator
             "Peppelrode",
             "MMC Eindhoven",
             "Rachelsmolen",
-            "Station Eindhoven"
+            "Station Eindhoven",
+
+            "Rachelsmolen",
+            "MMC Eindhoven",
+            "Peppelrode",
+            "Generaal Coenderslaan",
+            "Drossen straat",
+            "Generaal Hardenbergpad",
+            "Catharina Zh oost",
+            "WC Woensel",
+            "Koning Arthurlaan",
+            "Lohengrinlaan",
+            "Noordzeelaan",
+            "Deneerdbrand",
+            "Grebbeberglaan",
+            "Paasberglaan",
+            "Hondsruglaan",
+            "Smaragd",
+            "Bronziet"
         };
 
         public static void Init()

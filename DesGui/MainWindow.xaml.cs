@@ -25,6 +25,7 @@ namespace DesGui
         {
             InitializeComponent();
             InitConsole();
+            InitCharts();
         }
 
         private void InitConsole()
@@ -50,10 +51,18 @@ namespace DesGui
                         Log.Content.Output.RemoveAt(0);
                 });
             });
-            Log.ExecuteCommand += ExecuteCommand;
-            Test t = new Test();
-            SimRegion.DataContext = t; 
+            Log.ExecuteCommand += ExecuteCommand;           
         }
+
+        public void InitCharts()
+        {
+            DataView = new DataViewer();
+            SimRegion.DataContext = DataView;
+            Simulator.UpdateBusStopViewerHandler = DataView.UpdateBusStopViewer;
+            Simulator.UpdateTotalTimeViewerHandler = DataView.UpdateTotalTimeViewer;
+        }
+
+        private DataViewer DataView;
 
         private void ExecuteCommand(string Value)
         {
@@ -78,17 +87,19 @@ namespace DesGui
         private void Button_Launch_Click(object sender, RoutedEventArgs e)
         {
             Simulator Sim = new Simulator();
+            DataView.Clear();
             Sim.Config = new Config()
             {
-                RunningTime = 60 * 60 * 8, // 60s * 30min
+                RunningTime = 60 * int.Parse(TextBox_SimTime.Text),
                 Scheduler = new StaticScheduler(),
                 Buses = new Dictionary<int, int>()
                 {
-                    {0, 2} // line 0 bus * 2
+                    {0, 1} // line 0 bus * 2
                 },
                 BusInterval = 60 * 5 // 60s * 5min
-            };
-            Sim.Start();
+            };                  
+
+            Sim.Start();         
         }
 
         private void Button_Settings_Click(object sender, RoutedEventArgs e)
@@ -111,6 +122,18 @@ namespace DesGui
             Scroller.Visibility = Visibility.Hidden;
             InputBlock.Visibility = Visibility.Hidden;
             Logger.Instance.Enable = false;
+        }
+
+        private void SimRegionSroll(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer S = sender as ScrollViewer;
+            if (e.Delta > 0)
+                for (int i = 0; i < e.Delta/120; i++)
+                    S.LineLeft();
+            else
+                for (int i = 0; i > e.Delta/120; i--)
+                    S.LineRight();
+            e.Handled = true;
         }
     }
 }

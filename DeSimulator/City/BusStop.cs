@@ -18,6 +18,7 @@ namespace DeSimulator
 
         public string Name { get; private set; }
 
+
         public ConcurrentDictionary<string,ConcurrentQueue<Passenger>> Passengers { get; private set; }
     }
 }
