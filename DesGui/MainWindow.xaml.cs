@@ -31,7 +31,7 @@ namespace DesGui
         {
             Logger Log = Logger.Instance;
             Console.SetOut(Log);
-            DataContext = Log.Content;
+            Scroller.DataContext = Log.Content;
             Loaded += new RoutedEventHandler(delegate (object sender, RoutedEventArgs e)
             {
                 InputBlock.KeyDown += new KeyEventHandler(delegate (object _sender, KeyEventArgs _e)
@@ -51,6 +51,8 @@ namespace DesGui
                 });
             });
             Log.ExecuteCommand += ExecuteCommand;
+            Test t = new Test();
+            SimRegion.DataContext = t; 
         }
 
         private void ExecuteCommand(string Value)

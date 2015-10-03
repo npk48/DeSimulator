@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesGui"
         xmlns:controls="clr-namespace:DesGui"
+        xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
         mc:Ignorable="d"
         Title="De Simulator" Height="360" Width="640" Background="Transparent" Foreground="Black" WindowStyle="None" AllowsTransparency="True">
     <Grid>
@@ -22,7 +23,20 @@
             <Grid HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640">
                 <Image x:Name="Image_Background" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640" Stretch="UniformToFill" Source="/Image/Background.jpg" Opacity="0.5"/>
                 <Grid x:Name="SimRegion" >
-                    
+                    <chart:PieChart        
+                        Width="640"
+                        Height="292"
+                        ChartTitle="Minimal Pie Chart"   
+                        ChartSubTitle="Chart with fixed width and height"    
+                        SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+                        <chart:PieChart.Series>
+                            <chart:ChartSeries            
+                                SeriesTitle="Errors"
+                                DisplayMember="Category"
+                                ValueMember="Number"             
+                                ItemsSource="{Binding Path=Errors}" />
+                        </chart:PieChart.Series>
+                    </chart:PieChart>
                 </Grid>
                 <ScrollViewer Name="Scroller" Margin="0,0,0,17" Background="Black" BorderThickness="0" VerticalScrollBarVisibility="Hidden"  Visibility="Hidden" Opacity="0.7">
                     <StackPanel>

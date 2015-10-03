@@ -70,7 +70,8 @@ namespace DeSimulator
         {
             Console.WriteLine("Id: " + Id.ToString());
             Console.WriteLine(" From " + Start + " to " + Destination);
-            Console.WriteLine(" "+ (WaitingTime / 60.0f).ToString() +" : "+ (TravellingTime / 60.0f).ToString());
+            Console.WriteLine(" Waiting Time: " + (WaitingTime / 60.0f).ToString() + "min");
+            Console.WriteLine(" Travelling Time: " + (TravellingTime / 60.0f).ToString() + "min");
         }
     }
 
