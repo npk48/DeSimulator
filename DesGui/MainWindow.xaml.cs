@@ -170,6 +170,8 @@ namespace DesGui
 
         public static int Interval = 10; // ms
 
+        public static int Levevalue = 0;
+
         public static void AnimatedPageRight(this ScrollViewer S)
         {
             if (Page >= PageNumber-1)
@@ -183,10 +185,14 @@ namespace DesGui
             DispatcherTimer Timer = new DispatcherTimer();
             Timer.Interval = TimeSpan.FromMilliseconds(Interval);
             int TimeOffset = 0;
+            Levevalue = (int)Duration / Interval;
+            double StepValue = PageWidth / ((Levevalue * (Levevalue + 1)) / 2);
+            double savevalue = 0;
             Timer.Tick += (s, e) =>
             {
+                savevalue += StepValue * ((Duration - TimeOffset) / 10);
                 TimeOffset += Interval;
-                S.ScrollToHorizontalOffset(CurrentOffset + TimeOffset * Step);
+                S.ScrollToHorizontalOffset(CurrentOffset + savevalue);
                 if(TimeOffset>=Duration)
                 {
                     S.ScrollToHorizontalOffset(TargetOffset);
@@ -211,10 +217,15 @@ namespace DesGui
             DispatcherTimer Timer = new DispatcherTimer();
             Timer.Interval = TimeSpan.FromMilliseconds(Interval);
             int TimeOffset = 0;
+            Levevalue = (int)Duration / Interval;
+            double StepValue = PageWidth/((Levevalue * (Levevalue + 1)) / 2);
+            double savevalue = 0;
+
             Timer.Tick += (s, e) =>
             {
+                savevalue += StepValue * ((Duration - TimeOffset) / 10);
                 TimeOffset += Interval;
-                S.ScrollToHorizontalOffset(CurrentOffset - TimeOffset * Step);
+                S.ScrollToHorizontalOffset(CurrentOffset - savevalue);
                 if (TimeOffset >= Duration)
                 {
                     S.ScrollToHorizontalOffset(TargetOffset);
