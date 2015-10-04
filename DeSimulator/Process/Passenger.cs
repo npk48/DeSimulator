@@ -37,24 +37,22 @@ namespace DeSimulator
                     WaitingTime = Simulation.Now - BaseTime;
                 if (value == PassengerState.Arrived)
                     TravellingTime = Simulation.Now - BaseTime - WaitingTime;
-
-                if (value == PassengerState.Waiting)
-                {
-                    SimResult.BusstopRecords.AddOrUpdate(Start, 1, SimResult.UpdateBusstopRecord);
-                }                   
+                
                 if (value == PassengerState.Arrived)
                 {
                     // save all result in a result data class
-                    SimResult.TotalWaiting += WaitingTime / 60.0f;
-                    SimResult.TotalTravelling += TravellingTime / 60.0f;
+                    SimResult.BusstopRecords.AddOrUpdate(Start, 1, SimResult.UpdateBusstopRecord);
                     SimResult.PassengerRecords.Add(new PassengerTrackData()
                     {
+                        Id = Id,
                         BaseTime = BaseTime / 60.0f,
                         WaitingTime = WaitingTime / 60.0f,
                         TravellingTime = TravellingTime / 60.0f,
                         From = Start,
                         To = Destination
                     });
+                    SimResult.TotalWaiting += WaitingTime / 60.0f;
+                    SimResult.TotalTravelling += TravellingTime / 60.0f;
                     TestOutput();
                 }                 
             }

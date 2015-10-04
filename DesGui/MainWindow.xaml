@@ -24,54 +24,80 @@
             <CheckBox x:Name="CheckBox_Log" Content="Console" HorizontalAlignment="Left" Margin="79,303,0,7" VerticalAlignment="Center" Height="20" Foreground="White" BorderThickness="0" Checked="CheckBox_Log_Checked" Unchecked="CheckBox_Log_Unchecked"/>
             <Grid HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640">
                 <Image x:Name="Image_Background" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640" Stretch="UniformToFill" Source="/Image/Background.jpg" Opacity="0.5"/>
-                <Grid x:Name="SimRegion" >
-                    <ScrollViewer x:Name="SimRegionScroller" BorderThickness="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="SimRegionScroll">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="640"/>
-                                <ColumnDefinition Width="640"/>
-                            </Grid.ColumnDefinitions>
-                            <chart:ClusteredColumnChart        
-                                Grid.Column="0"
+                <ScrollViewer x:Name="SimRegionScroller" BorderThickness="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="SimRegionScroll">
+                    <Grid x:Name="SimRegion">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="640"/>
+                            <ColumnDefinition Width="640"/>
+                            <ColumnDefinition Width="640"/>
+                        </Grid.ColumnDefinitions>
+                        <chart:DoughnutChart
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"                                
+                            ChartLegendVisibility="Collapsed"                          
+                            Width="640"                                             
+                            Height="292"                                  
+                            Margin="0,0,0,0"        
+                            Palette="{StaticResource CustomColors}"
+                            Foreground="Black"
+                            ChartTitle="Bus Stop"                                                  
+                            ChartSubTitle="Waiting time and travelling time"
+                            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+                            <chart:DoughnutChart.Series>
+                                <chart:ChartSeries         
+                                    SeriesTitle="Waiting Time Distribution"                              
+                                    DisplayMember="Group"                                   
+                                    ValueMember="Number"                                  
+                                    ItemsSource="{Binding Path=BusStopWaiting}" />
+                                <chart:ChartSeries     
+                                    SeriesTitle="Travelling Time Distribution"                              
+                                    DisplayMember="Group"                                   
+                                    ValueMember="Number"                                  
+                                    ItemsSource="{Binding Path=BusStopTravelling}" />
+                            </chart:DoughnutChart.Series>
+                        </chart:DoughnutChart>
+                        <chart:ClusteredColumnChart        
+                                Grid.Column="1"
                                 HorizontalAlignment="Left"                                
                                 ChartLegendVisibility="Collapsed"                          
                                 Width="640"                                             
                                 Height="292"                                  
-                                Margin="0,0,0,0"                         
+                                Margin="0,0,0,0"
+                                Foreground="Black"
                                 ChartTitle="Passengers"                                                  
                                 ChartSubTitle="Total number of passengers arrived at each bus stop"                            
                                 SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-                                <chart:ClusteredColumnChart.Series>
-                                    <chart:ChartSeries                                
+                            <chart:ClusteredColumnChart.Series>
+                                <chart:ChartSeries                                
                                         SeriesTitle="Bus stops"                              
                                         DisplayMember="Stop"                                   
                                         ValueMember="Number"                                  
                                         ItemsSource="{Binding Path=BusStops}" />
-                                </chart:ClusteredColumnChart.Series>
-                            </chart:ClusteredColumnChart>
-                            <chart:PieChart     
-                                Grid.Column="1"
+                            </chart:ClusteredColumnChart.Series>
+                        </chart:ClusteredColumnChart>
+                        <chart:PieChart     
+                                Grid.Column="2"
                                 HorizontalAlignment="Left"                               
                                 ChartLegendVisibility="Collapsed"                          
                                 Width="640"                                             
                                 Height="292"                                  
-                                Margin="0,0,0,0"                         
+                                Margin="0,0,0,0"  
+                                Foreground="Black"
                                 ChartTitle="Time"                                                  
                                 ChartSubTitle="Waiting and travelling"                            
                                 SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-                                <chart:PieChart.Series>
-                                    <chart:ChartSeries      
+                            <chart:PieChart.Series>
+                                <chart:ChartSeries      
                                         SeriesTitle="Waiting Vs Travelling"                              
                                         DisplayMember="Type"                                   
                                         ValueMember="Time"                                  
                                         ItemsSource="{Binding Path=TotalTimes}" />
-                                </chart:PieChart.Series>
-                            </chart:PieChart>
-                        </Grid>
+                            </chart:PieChart.Series>
+                        </chart:PieChart>
                         
                         <!-- other charts -->
-                    </ScrollViewer>
-                </Grid>
+                    </Grid>
+                </ScrollViewer>
                 <ScrollViewer Name="Scroller" Margin="0,0,0,17" Background="Black" BorderThickness="0" VerticalScrollBarVisibility="Hidden"  Visibility="Hidden" Opacity="0.7">
                     <StackPanel>
                         <ItemsControl ItemsSource="{Binding Output, Mode=OneWay}">

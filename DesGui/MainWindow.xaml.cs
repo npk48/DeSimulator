@@ -62,6 +62,9 @@ namespace DesGui
             DataView = new DataViewer();
             SimRegion.DataContext = DataView;
             Simulator.OutputResultHandler = DataView.OutputResult;
+            AnimatedScrollViewer.PageNumber = SimRegion.ColumnDefinitions.Count;
+            SimRegionScroller.PageRight();
+            DataView.OnSelectedItem += OnSelectedItem;
         }
 
         private DataViewer DataView;
@@ -126,6 +129,12 @@ namespace DesGui
             Logger.Instance.Enable = false;
         }
 
+        private void OnSelectedItem(object Selected)
+        {
+            BusStopViewer B = Selected as BusStopViewer;
+            if (B == null) return;
+            SimRegionScroller.AnimatedPageLeft();
+        }
         private void SimRegionScroll(object sender, MouseWheelEventArgs e)
         {
             if (Monitor.TryEnter(locker))
@@ -159,9 +168,9 @@ namespace DesGui
     {
         public static bool InAnimation = false;
 
-        private static int Page = 0;
+        private static int Page = 1;
 
-        public static int PageNumber = 2;
+        public static int PageNumber = 0;
 
         public static double PageWidth = 640;
 

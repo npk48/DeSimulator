@@ -12,13 +12,13 @@ namespace DeSimulator
         public static void Init()
         {
             BusstopRecords = new ConcurrentDictionary<string, int>();
-            PassengerRecords = new ConcurrentBag<PassengerTrackData>();
+            PassengerRecords = new List<PassengerTrackData>();
             TotalWaiting = 0.0f;
             TotalTravelling = 0.0f;
         }
 
         public static ConcurrentDictionary<string, int> BusstopRecords;
-        public static ConcurrentBag<PassengerTrackData> PassengerRecords;
+        public static List<PassengerTrackData> PassengerRecords;
         public static float TotalWaiting;
         public static float TotalTravelling;
 
