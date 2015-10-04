@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:DesGui"
         xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
         mc:Ignorable="d"
-        Title="De Simulator" Height="360" Width="640" Background="Transparent" Foreground="Black" WindowStyle="None" AllowsTransparency="True">
+        Title="De Simulator" Height="360" Width="640" Background="Transparent" Foreground="Black" WindowStyle="None" AllowsTransparency="True" Icon="Image/Icon.ico">
     <Grid>
         <Rectangle Fill="#FF282828" HorizontalAlignment="Left" Height="30" Stroke="#FF282828" VerticalAlignment="Top" Width="640" MouseLeftButtonDown="Drag"/>
         <Grid HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" VerticalAlignment="Top" Width="630">
