@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DeSimulator;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace DesGui
 {
@@ -124,16 +127,103 @@ namespace DesGui
             Logger.Instance.Enable = false;
         }
 
-        private void SimRegionSroll(object sender, MouseWheelEventArgs e)
+        private void SimRegionScroll(object sender, MouseWheelEventArgs e)
         {
-            ScrollViewer S = sender as ScrollViewer;
-            if (e.Delta > 0)
-                for (int i = 0; i < e.Delta/120; i++)
-                    S.LineLeft();
-            else
-                for (int i = 0; i > e.Delta/120; i--)
-                    S.LineRight();
+            if (Monitor.TryEnter(locker))
+            {
+                try
+                {
+                    if(!AnimatedScrollViewer.InAnimation)
+                    {
+                        AnimatedScrollViewer.InAnimation = true;
+                        ScrollViewer S = sender as ScrollViewer;
+                        if (e.Delta > 0)
+                            S.AnimatedPageLeft();
+                        else
+                            S.AnimatedPageRight();
+                    }               
+                }
+                finally
+                {
+                    Monitor.Exit(locker);
+                }
+            }
+            
+
             e.Handled = true;
+        }
+
+        private object locker = new object();
+    }
+
+    public static class AnimatedScrollViewer
+    {
+        public static bool InAnimation = false;
+
+        private static int Page = 0;
+
+        public static int PageNumber = 2;
+
+        public static double PageWidth = 640;
+
+        public static double Duration = 250; // ms
+
+        public static int Interval = 10; // ms
+
+        public static void AnimatedPageRight(this ScrollViewer S)
+        {
+            if (Page >= PageNumber-1)
+            {
+                InAnimation = false;
+                return;
+            }
+            double CurrentOffset = Page * PageWidth;
+            double TargetOffset = Page * PageWidth + PageWidth;
+            double Step = PageWidth / Duration;
+            DispatcherTimer Timer = new DispatcherTimer();
+            Timer.Interval = TimeSpan.FromMilliseconds(Interval);
+            int TimeOffset = 0;
+            Timer.Tick += (s, e) =>
+            {
+                TimeOffset += Interval;
+                S.ScrollToHorizontalOffset(CurrentOffset + TimeOffset * Step);
+                if(TimeOffset>=Duration)
+                {
+                    S.ScrollToHorizontalOffset(TargetOffset);
+                    Timer.Stop();
+                    InAnimation = false;
+                }                             
+            };
+            Timer.Start();
+            Page++;
+        }
+
+        public static void AnimatedPageLeft(this ScrollViewer S)
+        {
+            if (Page <=0 )
+            {
+                InAnimation = false;
+                return;
+            }
+            double CurrentOffset = Page * PageWidth;
+            double TargetOffset = Page * PageWidth - PageWidth;
+            double Step = PageWidth / Duration;
+            DispatcherTimer Timer = new DispatcherTimer();
+            Timer.Interval = TimeSpan.FromMilliseconds(Interval);
+            int TimeOffset = 0;
+            Timer.Tick += (s, e) =>
+            {
+                TimeOffset += Interval;
+                S.ScrollToHorizontalOffset(CurrentOffset - TimeOffset * Step);
+                if (TimeOffset >= Duration)
+                {
+                    S.ScrollToHorizontalOffset(TargetOffset);
+                    Timer.Stop();
+                    InAnimation = false;
+                }
+            };
+            Timer.Start();
+            Page--;
         }
     }
 }

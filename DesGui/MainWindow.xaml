@@ -25,7 +25,7 @@
             <Grid HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640">
                 <Image x:Name="Image_Background" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640" Stretch="UniformToFill" Source="/Image/Background.jpg" Opacity="0.5"/>
                 <Grid x:Name="SimRegion" >
-                    <ScrollViewer x:Name="SimRegionScroller" BorderThickness="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="SimRegionSroll">
+                    <ScrollViewer x:Name="SimRegionScroller" BorderThickness="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="SimRegionScroll">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="640"/>

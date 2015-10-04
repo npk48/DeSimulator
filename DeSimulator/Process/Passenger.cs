@@ -41,6 +41,7 @@ namespace DeSimulator
                     TravellingTime = Simulation.Now - BaseTime - WaitingTime;
                 if (value == PassengerState.Arrived)
                 {
+                    // save all result in a result data class
                     Waiting += WaitingTime / 60.0f;
                     Travelling += TravellingTime / 60.0f;
                     TestOutput();

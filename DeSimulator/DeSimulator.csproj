@@ -52,6 +52,7 @@
     <Compile Include="Process\Bus.cs" />
     <Compile Include="City\BusStop.cs" />
     <Compile Include="Process\Passenger.cs" />
+    <Compile Include="SimResult.cs" />
     <Compile Include="Simulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticScheduler.cs" />
