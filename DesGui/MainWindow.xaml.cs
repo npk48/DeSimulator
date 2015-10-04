@@ -61,7 +61,7 @@ namespace DesGui
         {
             DataView = new DataViewer();
             SimRegion.DataContext = DataView;
-            
+            Simulator.OutputResultHandler = DataView.OutputResult;
         }
 
         private DataViewer DataView;
