@@ -61,8 +61,7 @@ namespace DesGui
         {
             DataView = new DataViewer();
             SimRegion.DataContext = DataView;
-            Simulator.UpdateBusStopViewerHandler = DataView.UpdateBusStopViewer;
-            Simulator.UpdateTotalTimeViewerHandler = DataView.UpdateTotalTimeViewer;
+            
         }
 
         private DataViewer DataView;

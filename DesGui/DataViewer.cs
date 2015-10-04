@@ -24,27 +24,19 @@ namespace DesGui
             BusStops.Clear();
         }
 
-        public void UpdateBusStopViewer(string[] Name,int[] Number)
+        public void OutputResult(Dictionary<string, int> BusstopRecords, List<PassengerTrackData> PassengerRecords, float TotalWaiting, float TotalTravelling)
         {
             System.Windows.Application.Current.Dispatcher.BeginInvoke(
                 System.Windows.Threading.DispatcherPriority.Normal,
                 (Action)delegate ()
                 {
-                    for(int i=0; i<Name.Length; i++)
+                    foreach(var k in BusstopRecords.Keys)
                     {
-                        BusStops.Add(new BusStopViewer() { Stop = Name[i],Number=Number[i] });
+                        BusStops.Add(new BusStopViewer() { Stop = k, Number = BusstopRecords[k] });
                     }
-                });          
-        }
+                    TotalTimes.Add(new TotalTimeViewer() { Type = "Waiting at bus stop", Time = TotalWaiting });
+                    TotalTimes.Add(new TotalTimeViewer() { Type = "Travelling on bus", Time = TotalTravelling });
 
-        public void UpdateTotalTimeViewer(float Waiting, float Travelling)
-        {
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(
-                System.Windows.Threading.DispatcherPriority.Normal,
-                (Action)delegate ()
-                {
-                    TotalTimes.Add(new TotalTimeViewer() { Type = "Waiting at bus stop", Time = Waiting });
-                    TotalTimes.Add(new TotalTimeViewer() { Type = "Travelling on bus", Time = Travelling });
                 });
         }
     }

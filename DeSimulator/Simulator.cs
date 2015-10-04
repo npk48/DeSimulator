@@ -26,10 +26,8 @@ namespace DeSimulator
 
         private Thread Backend;
 
-        public delegate void UpdateBusStopViewerDelegate(string[] Name, int[] Number);
-        public delegate void UpdateTotalTimeViewerDelegate(float Waiting, float Travelling);
-        public static UpdateBusStopViewerDelegate UpdateBusStopViewerHandler;
-        public static UpdateTotalTimeViewerDelegate UpdateTotalTimeViewerHandler;
+        public delegate void OutputResult(Dictionary<string,int> BusstopRecords, List<PassengerTrackData> PassengerRecords, float TotalWaiting, float TotalTravelling);
+        public static OutputResult OutputResultHandler;
 
         public void Start()
         {
@@ -62,7 +60,7 @@ namespace DeSimulator
             }
             Scheduler = Config.Scheduler;
             RunTime = Config.RunningTime;
-            Passenger.Travelling = Passenger.Waiting = Passenger.Counter = 0;
+            Passenger.Counter = 0;
         }
 
         private Config _Config;
@@ -112,12 +110,8 @@ namespace DeSimulator
 
         private IEnumerator<Task> Generator(Process Self, object Data)
         {
-            // initialize for data view
-            Dictionary<string, int> BusStopPassengers = new Dictionary<string, int>();
-            foreach (var b in CityMap.BusStops.Keys)
-                BusStopPassengers.Add(b, 0);
-
             // initialize
+            SimResult.Init();
             foreach (var line in Bus.Values)
             {
                 long Offset = 0;
@@ -126,7 +120,7 @@ namespace DeSimulator
                     bus.Activate(null,Offset);
                     Offset += Config.BusInterval;
                 }     
-            }
+            }        
 
             IntervalRate.Mean = 60; // 60s as random step time expectation
             IntervalRate.StandardDeviation = 30; // +- 30s around 60s           
@@ -140,7 +134,6 @@ namespace DeSimulator
                 foreach (var B in CityMap.BusStops.Values)
                 {
                     int Count = Arrival;
-                    BusStopPassengers[B.Name] += Count;
                     for (int i=0; i<Count;i++)
                     {
                         var Destinations = (from d in CityMap.TestLine
@@ -155,23 +148,14 @@ namespace DeSimulator
                 yield return Self.Delay(Step); // random time 
             }
 
-
-            //string[] Names = CityMap.BusStops.Keys.ToArray();
-            //int[] Values = new int[Names.Length];
-            //int Index = 0;
-            //foreach (var b in CityMap.BusStops.Values)
-            //{
-            //    int Count = 0;
-            //    foreach (var q in b.Passengers.Values)
-            //    {
-            //        Count += q.Count;
-            //    }
-            //    Names[Index] = b.Name;
-            //    Values[Index] = Count;
-            //    Index++;
-            //}
-            UpdateBusStopViewerHandler(BusStopPassengers.Keys.ToArray(), BusStopPassengers.Values.ToArray());
-            UpdateTotalTimeViewerHandler(Passenger.Waiting, Passenger.Travelling);
+            OutputResultHandler(
+                SimResult.BusstopRecords.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value),
+                SimResult.PassengerRecords.ToList(),
+                SimResult.TotalWaiting,
+                SimResult.TotalTravelling
+                );
             // release
             yield break;
         }

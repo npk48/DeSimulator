@@ -10,16 +10,14 @@ namespace DeSimulator
     {
         public Passenger(Simulation Sim, string From = "", string To = "") : base(Sim)
         {
-            Id = Counter++;
-            State = PassengerState.Waiting;
+            Id = Counter++;           
             Start = From;
             Destination = To;
-            OnOffTime = 1;           
+            OnOffTime = 1;
+            State = PassengerState.Waiting;
         }
 
         public static int Counter = 0;
-        public static float Waiting = 0.0f;
-        public static float Travelling = 0.0f;
 
         private int Id;
 
@@ -39,11 +37,24 @@ namespace DeSimulator
                     WaitingTime = Simulation.Now - BaseTime;
                 if (value == PassengerState.Arrived)
                     TravellingTime = Simulation.Now - BaseTime - WaitingTime;
+
+                if (value == PassengerState.Waiting)
+                {
+                    SimResult.BusstopRecords.AddOrUpdate(Start, 1, SimResult.UpdateBusstopRecord);
+                }                   
                 if (value == PassengerState.Arrived)
                 {
                     // save all result in a result data class
-                    Waiting += WaitingTime / 60.0f;
-                    Travelling += TravellingTime / 60.0f;
+                    SimResult.TotalWaiting += WaitingTime / 60.0f;
+                    SimResult.TotalTravelling += TravellingTime / 60.0f;
+                    SimResult.PassengerRecords.Add(new PassengerTrackData()
+                    {
+                        BaseTime = BaseTime / 60.0f,
+                        WaitingTime = WaitingTime / 60.0f,
+                        TravellingTime = TravellingTime / 60.0f,
+                        From = Start,
+                        To = Destination
+                    });
                     TestOutput();
                 }                 
             }
