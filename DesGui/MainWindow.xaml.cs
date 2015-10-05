@@ -99,9 +99,9 @@ namespace DesGui
                 Scheduler = new StaticScheduler(),
                 Buses = new Dictionary<int, int>()
                 {
-                    {0, 1} // line 0 bus * 2
+                    {0, int.Parse(TextBox_BusNumber.Text)} // line 0 bus * n
                 },
-                BusInterval = 60 * 5 // 60s * 5min
+                BusInterval = 60 * int.Parse(TextBox_Interval.Text) // 60s * 5min
             };                  
 
             Sim.Start();         

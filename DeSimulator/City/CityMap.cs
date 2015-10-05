@@ -75,6 +75,28 @@ namespace DeSimulator
             "Bronziet"
         };
 
+        public static string[] TestLine2 =
+        {
+            "Bronziet",
+            "Smaragd",
+            "Hondsruglaan",
+            "Paasberglaan",
+            "Grebbeberglaan",
+            "Deneerdbrand",
+            "Noordzeelaan",
+            "Lohengrinlaan",
+            "Koning Arthurlaan",
+            "WC Woensel",
+            "Catharina Zh oost",
+            "Generaal Hardenbergpad",
+            "Drossen straat",
+            "Generaal Coenderslaan",
+            "Peppelrode",
+            "MMC Eindhoven",
+            "Rachelsmolen",
+            "Station Eindhoven",
+        };
+
         public static void Init()
         {
             BusStops = new Dictionary<string, BusStop>();

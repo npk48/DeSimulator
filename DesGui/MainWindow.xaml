@@ -20,7 +20,11 @@
             <Button x:Name="Button_Launch" Content="Run" HorizontalAlignment="Left" Margin="570,300,0,0" VerticalAlignment="Top" Width="60" Height="20" BorderThickness="0" Click="Button_Launch_Click"/>
             <Button x:Name="Button_Settings" Content="Settings" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="57" Height="20" BorderThickness="0" Click="Button_Settings_Click"/>
             <Label x:Name="Label_Time" Content="Time in miniute:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="400,297,0,0"/>
-            <TextBox x:Name="TextBox_SimTime" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="500,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="60" VerticalAlignment="Top" Width="60" BorderThickness="0"/>
+            <TextBox x:Name="TextBox_SimTime" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="500,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="360" VerticalAlignment="Top" Width="60" BorderThickness="0"/>
+            <Label x:Name="Label_BusNumber" Content="Bus Number:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="159,297,0,0"/>
+            <TextBox x:Name="TextBox_BusNumber" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="248,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="1" VerticalAlignment="Top" Width="40" BorderThickness="0"/>
+            <Label x:Name="Label_Interval" Content="Interval:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="294,297,0,0"/>
+            <TextBox x:Name="TextBox_Interval" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="355,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="5" VerticalAlignment="Top" Width="40" BorderThickness="0"/>
             <CheckBox x:Name="CheckBox_Log" Content="Console" HorizontalAlignment="Left" Margin="79,303,0,7" VerticalAlignment="Center" Height="20" Foreground="White" BorderThickness="0" Checked="CheckBox_Log_Checked" Unchecked="CheckBox_Log_Unchecked"/>
             <Grid HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640">
                 <Image x:Name="Image_Background" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640" Stretch="UniformToFill" Source="/Image/Background.jpg" Opacity="0.5"/>
