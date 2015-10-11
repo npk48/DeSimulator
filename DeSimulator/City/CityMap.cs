@@ -53,8 +53,8 @@ namespace DeSimulator
                     BusStops.Add(r.BusStopB, new BusStop(r.BusStopB));
             }
             Lines = new Dictionary<int, string[]>();
-            Lines.Add(1, BusLine1);
-            Lines.Add(2, BusLine2);
+            Lines.Add(0, BusLine1);
+            Lines.Add(1, BusLine2);
         }
 
         public static bool Navigate(string From,string To,out Route Result)
@@ -96,7 +96,7 @@ namespace DeSimulator
             "Station Eindhoven",
             "Rachelsmolen",
             "MMC Eindhoven",
-            "Pepperlrode",
+            "Peppelrode",
             "Generaal Coenderslaan",
             "Drossen straat",
             "Generaal Hardenbergpad",

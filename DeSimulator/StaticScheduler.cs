@@ -7,10 +7,10 @@ namespace DeSimulator
 {
     public class StaticScheduler : IScheduler
     {
-        public void Update(ref List<string> Destination, ref int ExpectedTime, ref Dictionary<string, Queue<Passenger>> Passengers)
+        public void Update(int BusLine,ref List<string> Destination, ref int ExpectedTime, ref Dictionary<string, Queue<Passenger>> Passengers)
         {
             if(Destination.Count == 0)
-                Destination = new List<string>(CityMap.Lines[1]);
+                Destination = new List<string>(CityMap.Lines[BusLine]);
 
             Shift(ref Destination);
 

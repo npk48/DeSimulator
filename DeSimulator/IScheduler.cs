@@ -7,6 +7,6 @@ namespace DeSimulator
 {
     public interface IScheduler
     {
-        void Update(ref List<string> Destination, ref int ExpectedTime, ref Dictionary<string, Queue<Passenger>> Passengers);
+        void Update(int BusLine,ref List<string> Destination, ref int ExpectedTime, ref Dictionary<string, Queue<Passenger>> Passengers);
     }
 }

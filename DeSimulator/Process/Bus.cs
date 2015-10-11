@@ -27,7 +27,7 @@ namespace DeSimulator
             while(Now < Simulator.RunTime)
             {
                 // drive to destination
-                Simulator.Scheduler.Update(ref Destination, ref ExpectedTime, ref Passengers);
+                Simulator.Scheduler.Update(Identity, ref Destination, ref ExpectedTime, ref Passengers);
                 yield return Delay(ExpectedTime); // + random traffic jam
 
                 // pick passengers
