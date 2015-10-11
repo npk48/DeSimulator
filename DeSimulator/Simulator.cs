@@ -140,11 +140,11 @@ namespace DeSimulator
 
                         string[] SelectedLine = { "" };
                         SelectedLine = CityMap.Lines[1];
-                        //do
-                        //{
-                        //    //SelectedLine = CityMap.Lines[rd.Next(1, CityMap.Lines.Keys.Count)];
-                        //    SelectedLine = CityMap.Lines[1];
-                        //} while (!SelectedLine.ToList().Exists(x => x == B.Name));
+                        do
+                        {
+                            SelectedLine = CityMap.Lines[rd.Next(1, CityMap.Lines.Keys.Count + 1)];
+                            //SelectedLine = CityMap.Lines[1];
+                        } while (!SelectedLine.ToList().Exists(x => x == B.Name));
 
                         var Destinations = (from d in SelectedLine
                                             where d != B.Name
