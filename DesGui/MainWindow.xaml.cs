@@ -93,18 +93,7 @@ namespace DesGui
         {
             Simulator Sim = new Simulator();
             DataView.Clear();
-            Sim.Config = new Config()
-            {
-                RunningTime = 60 * int.Parse(TextBox_SimTime.Text),
-                Scheduler = new StaticScheduler(),
-                Buses = new Dictionary<int, int>()
-                {
-                    {0, int.Parse(TextBox_BusNumber.Text)}, // line 0 bus * n
-                    {1, 1 }
-                },
-                BusInterval = 60 * int.Parse(TextBox_Interval.Text) // 60s * 5min
-            };                  
-
+            Sim.Config = Settings_Form.Config;           
             Sim.Start();         
         }
 
@@ -163,6 +152,39 @@ namespace DesGui
         }
 
         private object locker = new object();
+
+        private void ComboBox_Busline_Loaded(object sender, RoutedEventArgs e)
+        {
+            List<string> items = new List<string>();
+            items.Add("0");
+            items.Add("1");
+            ComboBox_Busline.ItemsSource = items;
+        }
+
+        private void ComboBox_Busline_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            ComboBox_Busline.DataContext = box.SelectedItem;
+            if (e.RemovedItems.Count == 0) return;
+            string Selected = ComboBox_Busline.SelectedItem as string;
+            DataView.ShowBusline(int.Parse(Selected));
+        }
+
+        private Point LastTouch;
+        private void SimRegionScroller_TouchDown(object sender, TouchEventArgs e)
+        {
+            LastTouch = e.GetTouchPoint(this).Position;
+        }
+
+        private void SimRegionScroller_TouchUp(object sender, TouchEventArgs e)
+        {
+            var Now = e.GetTouchPoint(this).Position;
+            var Offset = Now.X - LastTouch.X;
+            if(Offset > 20)
+                SimRegionScroller.PageLeft();
+            else if (Offset <-20)
+                SimRegionScroller.PageRight();
+        }
     }
 
     public static class AnimatedScrollViewer

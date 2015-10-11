@@ -19,18 +19,16 @@
         <Grid HorizontalAlignment="Left" Height="330" Margin="0,30,0,0" VerticalAlignment="Top" Width="640">
             <Button x:Name="Button_Launch" Content="Run" HorizontalAlignment="Left" Margin="570,300,0,0" VerticalAlignment="Top" Width="60" Height="20" BorderThickness="0" Click="Button_Launch_Click"/>
             <Button x:Name="Button_Settings" Content="Settings" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="57" Height="20" BorderThickness="0" Click="Button_Settings_Click"/>
-            <Label x:Name="Label_Time" Content="Time in miniute:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="400,297,0,0"/>
-            <TextBox x:Name="TextBox_SimTime" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="500,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="360" VerticalAlignment="Top" Width="60" BorderThickness="0"/>
-            <Label x:Name="Label_BusNumber" Content="Bus Number:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="159,297,0,0"/>
-            <TextBox x:Name="TextBox_BusNumber" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="248,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="1" VerticalAlignment="Top" Width="40" BorderThickness="0"/>
-            <Label x:Name="Label_Interval" Content="Interval:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="294,297,0,0"/>
-            <TextBox x:Name="TextBox_Interval" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="20" Margin="355,300,0,0" TextWrapping="Wrap" TextAlignment="Right" Text="5" VerticalAlignment="Top" Width="40" BorderThickness="0"/>
             <CheckBox x:Name="CheckBox_Log" Content="Console" HorizontalAlignment="Left" Margin="79,303,0,7" VerticalAlignment="Center" Height="20" Foreground="White" BorderThickness="0" Checked="CheckBox_Log_Checked" Unchecked="CheckBox_Log_Unchecked"/>
+            <Label x:Name="Label_Busline" Content="Show Busline:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.346,0.04" Foreground="White" Margin="393,297,0,0"/>
+            <ComboBox x:Name="ComboBox_Busline" HorizontalAlignment="Left" Margin="487,300,0,0" VerticalAlignment="Top" Width="61" Height="20" BorderThickness="0" SelectedIndex="0" Loaded="ComboBox_Busline_Loaded" SelectionChanged="ComboBox_Busline_SelectionChanged" />
+
             <Grid HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640">
                 <Image x:Name="Image_Background" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="640" Stretch="UniformToFill" Source="/Image/Background.jpg" Opacity="0.5"/>
-                <ScrollViewer x:Name="SimRegionScroller" BorderThickness="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="SimRegionScroll">
+                <ScrollViewer x:Name="SimRegionScroller" BorderThickness="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="SimRegionScroll" TouchDown="SimRegionScroller_TouchDown" TouchUp="SimRegionScroller_TouchUp">
                     <Grid x:Name="SimRegion">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="640"/>
                             <ColumnDefinition Width="640"/>
                             <ColumnDefinition Width="640"/>
                             <ColumnDefinition Width="640"/>
@@ -79,8 +77,29 @@
                                         ItemsSource="{Binding Path=BusStops}" />
                             </chart:ClusteredColumnChart.Series>
                         </chart:ClusteredColumnChart>
+
+                        <chart:RadialGaugeChart
+                            Grid.Column="2"
+                                HorizontalAlignment="Left"     
+                                ChartLegendVisibility="Collapsed"                          
+                                Width="640"                                             
+                                Height="350"                                  
+                                Margin="0,0,0,0"  
+                                Foreground="Black"
+                                ChartTitle="General satisfaction"                                                  
+                                ChartSubTitle="satisfication normalized into 100%"                            
+                                SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+                            <chart:RadialGaugeChart.Series>
+                                <chart:ChartSeries
+                                    SeriesTitle="Satisfication"                              
+                                    DisplayMember="Satisfication"                                   
+                                    ValueMember="Percent"                                  
+                                    ItemsSource="{Binding Path=Satisfication}">
+                                </chart:ChartSeries>
+                            </chart:RadialGaugeChart.Series>
+                        </chart:RadialGaugeChart>
                         <chart:PieChart     
-                                Grid.Column="2"
+                                Grid.Column="3"
                                 HorizontalAlignment="Left"                               
                                 ChartLegendVisibility="Collapsed"                          
                                 Width="640"                                             

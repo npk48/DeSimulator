@@ -14,6 +14,8 @@ namespace DesGui
         public ObservableCollection<DetailedBusStopViewer> BusStopWaiting { get; set; }
         public ObservableCollection<DetailedBusStopViewer> BusStopTravelling { get; set; }
 
+        public ObservableCollection<SatisficationViewer> Satisfication { get; set; }
+
         public object _SelectedItem;
         public object SelectedItem
         {
@@ -37,6 +39,7 @@ namespace DesGui
             TotalTimes = new ObservableCollection<TotalTimeViewer>();
             BusStopWaiting = new ObservableCollection<DetailedBusStopViewer>();
             BusStopTravelling = new ObservableCollection<DetailedBusStopViewer>();
+            Satisfication = new ObservableCollection<SatisficationViewer>();
             OnSelectedItem += OnBusStopSelected;
         }
 
@@ -49,6 +52,7 @@ namespace DesGui
             TotalTimes.Clear();
             BusStopWaiting.Clear();
             BusStopTravelling.Clear();
+            Satisfication.Clear();
         }
 
         private void OnBusStopSelected(object Selected)
@@ -64,10 +68,10 @@ namespace DesGui
             UpdateDetailedBusStopWaiting(B, 10, 15, "10 - 15 min waiting group");
             UpdateDetailedBusStopWaiting(B, 15, 999, "15 - N min waiting group");
             // update travelling time
-            UpdateDetailedBusStopTravelling(B, 0, 5, "0 - 5 min travelling group");
-            UpdateDetailedBusStopTravelling(B, 5, 10, "5 - 10 min travelling group");
-            UpdateDetailedBusStopTravelling(B, 10, 15, "10 - 15 min travelling group");
-            UpdateDetailedBusStopTravelling(B, 15, 999, "15 - N min travelling group");
+            UpdateDetailedBusStopTravelling(B, 0, 15, "0 - 15 min travelling group");
+            UpdateDetailedBusStopTravelling(B, 15, 30, "15 - 30 min travelling group");
+            UpdateDetailedBusStopTravelling(B, 30, 45, "30 - 45 min travelling group");
+            UpdateDetailedBusStopTravelling(B, 45, 999, "45 - N min travelling group");
 
 
         }
@@ -101,8 +105,8 @@ namespace DesGui
             System.Windows.Application.Current.Dispatcher.BeginInvoke(
                 System.Windows.Threading.DispatcherPriority.Normal,
                 (Action)delegate ()
-                {  
-                    foreach (var k in CityMap.Lines[1])
+                {
+                    foreach (var k in CityMap.Lines[0])
                     {
                         int n = 0;
                         if (BusstopRecords.Keys.ToList().Exists(x => x == k))
@@ -110,8 +114,32 @@ namespace DesGui
                         BusStops.Add(new BusStopViewer() { Stop = k, Number = n });
                     }
                     TotalTimes.Add(new TotalTimeViewer() { Type = "Waiting at bus stop", Time = TotalWaiting });
-                    TotalTimes.Add(new TotalTimeViewer() { Type = "Travelling on bus", Time = TotalTravelling });                 
+                    TotalTimes.Add(new TotalTimeViewer() { Type = "Travelling on bus", Time = TotalTravelling });
+
+                    float GeneralHappiness = 0.0f;
+                    foreach(var r in PassengerRecords)
+                    {
+                        float Crowdness = r.Crowdness;           // 0.0f - 1.0f
+                        float WaitingTime = r.WaitingTime > 15.0f ? 1.0f : r.WaitingTime / 15.0f; // 0.0f - 1.0f
+                        float TravelingTime = r.TravellingTime > 60.0f ? 1.0f : r.TravellingTime / 60.0f; // 0.0f - 1.0f
+                        float Happiness = 100.0f - 100.0f * (WaitingTime * 8.05f + Crowdness * 7.97f + TravelingTime * 7.29f)/(8.05f + 7.97f + 7.29f);
+                        GeneralHappiness += Happiness;
+                    }
+                    GeneralHappiness /= PassengerRecords.Count;
+                    Satisfication.Add(new SatisficationViewer() { Percent = GeneralHappiness });
                 });
+        }
+
+        public void ShowBusline(int Line)
+        {
+            BusStops.Clear();
+            foreach (var k in CityMap.Lines[Line])
+            {
+                int n = 0;
+                if (BusstopRecords.Keys.ToList().Exists(x => x == k))
+                    n = BusstopRecords[k];
+                BusStops.Add(new BusStopViewer() { Stop = k, Number = n });
+            }
         }
     }
 
@@ -132,5 +160,18 @@ namespace DesGui
     {
         public string Group { get; set; }
         public int Number { get; set; }
+    }
+
+    public class SatisficationViewer
+    {
+        public string Satisfication
+        {
+            get
+            {
+                return "Satisfication";
+            }
+        }
+
+        public float Percent { get; set; }
     }
 }

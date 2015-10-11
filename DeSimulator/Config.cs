@@ -11,5 +11,6 @@ namespace DeSimulator
         public IScheduler Scheduler;
         public Dictionary<int, int> Buses; // line:#bus
         public long BusInterval;
+        public int MaxPassenger;
     }
 }

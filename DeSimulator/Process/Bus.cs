@@ -9,9 +9,10 @@ namespace DeSimulator
 {
     public class Bus : Process
     {
-        public Bus(Simulation Sim, int Id = 0) : base(Sim)
+        public Bus(Simulation Sim, int Id = 0, int Max = 999) : base(Sim)
         {
             Identity = Id;
+            MaxPassengers = Max;
             Passengers = new Dictionary<string, Queue<Passenger>>();
             Destination = new List<string>();
         }
@@ -20,7 +21,8 @@ namespace DeSimulator
 
         private int ExpectedTime;
         private List<string> Destination;
-        private Dictionary<string, Queue<Passenger>> Passengers; 
+        private Dictionary<string, Queue<Passenger>> Passengers;
+        private int MaxPassengers = 999;
 
         protected override IEnumerator<Task> GetProcessSteps()
         {
@@ -31,6 +33,10 @@ namespace DeSimulator
                 yield return Delay(ExpectedTime); // + random traffic jam
 
                 // pick passengers
+                int PassengerCount = 0;
+                foreach (var queue in Passengers.Values)
+                    PassengerCount += queue.Count;
+
                 BusStop Arrived = CityMap.BusStops[Destination[0]];                
                 foreach(var dest in Destination)
                 {
@@ -45,6 +51,10 @@ namespace DeSimulator
                             if (queue.TryDequeue(out passenger))
                             {
                                 yield return passenger;
+                                if (PassengerCount > MaxPassengers)
+                                    passenger.Crowdness = 1.0f;
+                                else
+                                    passenger.Crowdness = PassengerCount / (MaxPassengers * 1.0f);
                                 Passengers[dest].Enqueue(passenger);
                             }
                         }                       
@@ -61,6 +71,19 @@ namespace DeSimulator
                         yield return passenger;
                     }
                         
+                }
+
+                
+                foreach (var queue in Passengers.Values)
+                {
+                    foreach (var p in queue)
+                    {
+                        float Max = MaxPassengers;
+                        if (PassengerCount > Max)
+                            p.Crowdness = 1.0f;
+                        else
+                            p.Crowdness = PassengerCount / Max;
+                    }
                 }
             }
             yield break;

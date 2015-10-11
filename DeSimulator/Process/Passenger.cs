@@ -19,6 +19,8 @@ namespace DeSimulator
 
         public static int Counter = 0;
 
+        public float Crowdness = 0;
+
         private int Id;
 
         private PassengerState _State;
@@ -49,7 +51,8 @@ namespace DeSimulator
                         WaitingTime = WaitingTime / 60.0f,
                         TravellingTime = TravellingTime / 60.0f,
                         From = Start,
-                        To = Destination
+                        To = Destination,
+                        Crowdness = Crowdness
                     });
                     SimResult.TotalWaiting += WaitingTime / 60.0f;
                     SimResult.TotalTravelling += TravellingTime / 60.0f;

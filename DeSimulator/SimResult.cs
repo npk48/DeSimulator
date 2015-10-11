@@ -35,6 +35,7 @@ namespace DeSimulator
         public float TravellingTime;
         public string From;
         public string To;
+        public float Crowdness;
         public int Id;
     }
 }

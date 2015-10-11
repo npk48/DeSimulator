@@ -56,7 +56,7 @@ namespace DeSimulator
             {
                 Bus.Add(line, new List<Bus>());
                 for (int i = 0; i < Config.Buses[line]; i++)
-                    Bus[line].Add(new Bus(this, line));
+                    Bus[line].Add(new Bus(this, line,Config.MaxPassenger));
             }
             Scheduler = Config.Scheduler;
             RunTime = Config.RunningTime;
