@@ -7,6 +7,7 @@ namespace DeSimulator
 {
     public static class CityMap
     {
+        public static Dictionary<int, string[]> Lines;
         public static Dictionary<string, BusStop> BusStops;
         public static Route[] Routes =
         {
@@ -32,69 +33,12 @@ namespace DeSimulator
             new Route("Generaal Coenderslaan", "Peppelrode",            750.0f,  2.0f),
             new Route("Peppelrode",            "MMC Eindhoven",         190.0f,  0.5f),
             new Route("MMC Eindhoven",         "Rachelsmolen",          600.0f,  3.0f),
-            new Route("Rachelsmolen",          "Station Eindhoven",     1100.0f, 5.0f)
-        };
-
-        public static string[] TestLine =
-        {
-            "Bronziet",
-            "Smaragd",
-            "Hondsruglaan",
-            "Paasberglaan",
-            "Grebbeberglaan",
-            "Deneerdbrand",
-            "Noordzeelaan",
-            "Lohengrinlaan",
-            "Koning Arthurlaan",
-            "WC Woensel",
-            "Catharina Zh oost",
-            "Generaal Hardenbergpad",
-            "Drossen straat",
-            "Generaal Coenderslaan",
-            "Peppelrode",
-            "MMC Eindhoven",
-            "Rachelsmolen",
-            "Station Eindhoven",
-
-            "Rachelsmolen",
-            "MMC Eindhoven",
-            "Peppelrode",
-            "Generaal Coenderslaan",
-            "Drossen straat",
-            "Generaal Hardenbergpad",
-            "Catharina Zh oost",
-            "WC Woensel",
-            "Koning Arthurlaan",
-            "Lohengrinlaan",
-            "Noordzeelaan",
-            "Deneerdbrand",
-            "Grebbeberglaan",
-            "Paasberglaan",
-            "Hondsruglaan",
-            "Smaragd",
-            "Bronziet"
-        };
-
-        public static string[] TestLine2 =
-        {
-            "Bronziet",
-            "Smaragd",
-            "Hondsruglaan",
-            "Paasberglaan",
-            "Grebbeberglaan",
-            "Deneerdbrand",
-            "Noordzeelaan",
-            "Lohengrinlaan",
-            "Koning Arthurlaan",
-            "WC Woensel",
-            "Catharina Zh oost",
-            "Generaal Hardenbergpad",
-            "Drossen straat",
-            "Generaal Coenderslaan",
-            "Peppelrode",
-            "MMC Eindhoven",
-            "Rachelsmolen",
-            "Station Eindhoven",
+            new Route("Rachelsmolen",          "Station Eindhoven",     1100.0f, 5.0f),
+            // new routes
+            new Route("Bronziet",              "Agaat",                 350.0f,  1.0f),
+            new Route("Bronziet",              "WC Woensel",            2700.0f, 6.0f),
+            new Route("Agaat",                 "WC Woensel",            2600.0f, 6.0f),
+            new Route("Agaat",                 "Paasberglaan",          300.0f,  1.0f)
         };
 
         public static void Init()
@@ -108,6 +52,9 @@ namespace DeSimulator
                 if (!BusStops.TryGetValue(r.BusStopB, out t))
                     BusStops.Add(r.BusStopB, new BusStop(r.BusStopB));
             }
+            Lines = new Dictionary<int, string[]>();
+            Lines.Add(1, BusLine1);
+            Lines.Add(2, BusLine2);
         }
 
         public static bool Navigate(string From,string To,out Route Result)
@@ -121,5 +68,48 @@ namespace DeSimulator
             Result = result.First();
             return true;
         }
+
+        public static string[] BusLine1 =
+        {
+            "Bronziet",
+            "Smaragd",
+            "Hondsruglaan",
+            "Paasberglaan",
+            "Grebbeberglaan",
+            "Deneerdbrand",
+            "Noordzeelaan",
+            "Lohengrinlaan",
+            "Koning Arthurlaan",
+            "WC Woensel",
+            "Catharina Zh oost",
+            "Generaal Hardenbergpad",
+            "Drossen straat",
+            "Generaal Coenderslaan",
+            "Peppelrode",
+            "MMC Eindhoven",
+            "Rachelsmolen",
+            "Station Eindhoven",
+        };
+
+        public static string[] BusLine2 =
+        {
+            "Station Eindhoven",
+            "Rachelsmolen",
+            "MMC Eindhoven",
+            "Pepperlrode",
+            "Generaal Coenderslaan",
+            "Drossen straat",
+            "Generaal Hardenbergpad",
+            "Catharina Zh oost",
+            "WC Woensel",
+            "Koning Arthurlaan",
+            "Lohengrinlaan",
+            "Noordzeelaan",
+            "Deneerdbrand",
+            "Grebbeberglaan",
+            "Paasberglaan",
+            "Agaat",
+            "Bronziet"
+        };
     }
 }

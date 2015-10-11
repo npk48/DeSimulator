@@ -102,7 +102,7 @@ namespace DesGui
                 System.Windows.Threading.DispatcherPriority.Normal,
                 (Action)delegate ()
                 {  
-                    foreach (var k in CityMap.TestLine2)
+                    foreach (var k in CityMap.Lines[1])
                     {
                         int n = 0;
                         if (BusstopRecords.Keys.ToList().Exists(x => x == k))

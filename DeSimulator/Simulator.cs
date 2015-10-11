@@ -131,12 +131,22 @@ namespace DeSimulator
             {
                 int Step = Interval;
                 ArrivalRate.Mean = 1 * Step / 60.0; // 1 passenger per 60s
+
                 foreach (var B in CityMap.BusStops.Values)
                 {
                     int Count = Arrival;
                     for (int i=0; i<Count;i++)
                     {
-                        var Destinations = (from d in CityMap.TestLine
+
+                        string[] SelectedLine = { "" };
+                        SelectedLine = CityMap.Lines[1];
+                        //do
+                        //{
+                        //    //SelectedLine = CityMap.Lines[rd.Next(1, CityMap.Lines.Keys.Count)];
+                        //    SelectedLine = CityMap.Lines[1];
+                        //} while (!SelectedLine.ToList().Exists(x => x == B.Name));
+
+                        var Destinations = (from d in SelectedLine
                                             where d != B.Name
                                             select d).ToList();
                         string Destination = Destinations[rd.Next(0, Destinations.Count)];
