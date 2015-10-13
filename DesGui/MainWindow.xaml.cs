@@ -181,9 +181,9 @@ namespace DesGui
             var Now = e.GetTouchPoint(this).Position;
             var Offset = Now.X - LastTouch.X;
             if(Offset > 20)
-                SimRegionScroller.PageLeft();
+                SimRegionScroller.AnimatedPageLeft();
             else if (Offset <-20)
-                SimRegionScroller.PageRight();
+                SimRegionScroller.AnimatedPageRight();
         }
     }
 

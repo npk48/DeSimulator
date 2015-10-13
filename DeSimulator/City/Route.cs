@@ -16,9 +16,9 @@ namespace DeSimulator
             this.Crowdness = Crowdness;
         }
 
-        public string BusStopA { get; private set; }
+        public string BusStopA { get; set; }
 
-        public string BusStopB { get; private set; }
+        public string BusStopB { get; set; }
 
         public float Distance { get; private set; }
 

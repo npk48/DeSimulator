@@ -48,8 +48,8 @@ namespace DesGui
             Selected = ComboBox_Scheduler.SelectedItem as string;
             if (Selected == "Static")
                 Config.Scheduler = new StaticScheduler();
-            //else if (Selected == "Dynamic")
-            //    Config.Scheduler = new DynamicScheduler();
+            else if (Selected == "Dynamic")
+                Config.Scheduler = new DynamicScheduler();
             Config.MaxPassenger = int.Parse(TextBox_MaxPassenger.Text);
             Config.RunningTime = 60 * int.Parse(TextBox_SimTime.Text);
         }
